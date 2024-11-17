@@ -14,7 +14,7 @@
 - You can also visit the training code here : [Kaggle Code](https://www.kaggle.com/code/rithvik5151/recipal-final-code)
 - Run the backend server by ```python3 app.py ```
 - Run the frontend Next JS app by ```npm run dev```
-- This repo internally uses Stable Diffusion's Text to Image API. Get your own API and replace in the following file : ```frontend/app/recipe/[id]/page.tsx``` for the application to run properly.
+- This project internally uses Stable Diffusion's Text to Image API. Get your own API key and replace in the following file : ```frontend/app/recipe/[id]/page.tsx``` for the application to run properly.
 
 
 
