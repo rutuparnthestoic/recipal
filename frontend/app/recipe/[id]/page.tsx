@@ -21,7 +21,7 @@ async function fetchRecipe(id: string | string[]) {
 }
 
 function formatRecipeInstructions(instructions: string | undefined) {
-  const sections = instructions.split('\n')
+  const sections = instructions ? instructions.split('\n') : ''
   const formattedData: { [key: string]: string } = {}
 
   let currentSection = ''
