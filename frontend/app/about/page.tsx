@@ -1,6 +1,18 @@
 import { GraduationCap, Users, Rocket, Code, Database, Brain, Volume2 } from 'lucide-react'
 import Link from 'next/link'
 
+interface Responsibility {
+  icon: JSX.Element;
+  text: string;
+}
+
+interface TeamMemberProps {
+  name: string;
+  role: string;
+  responsibilities: Responsibility[];
+  link: string;
+}
+
 export default function AboutUs() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -81,7 +93,7 @@ export default function AboutUs() {
   )
 }
 
-function TeamMember({ name, role, responsibilities, link }) {
+function TeamMember({ name, role, responsibilities, link }: TeamMemberProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <Link href={link} className="text-xl font-semibold text-blue-600 hover:underline">
