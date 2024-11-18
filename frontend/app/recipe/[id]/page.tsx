@@ -98,7 +98,7 @@ export default function RecipePage() {
         const recipeData = await fetchRecipe(id)
         setRecipe(recipeData)
 
-        const formattedInstructions = formatRecipeInstructions(recipeData.instructions)
+        const formattedInstructions = formatRecipeInstructions(recipeData.instructions ?? '')
         const recipeName = formattedInstructions['Recipe Name'] || 'Delicious recipe'
         const imageUrl = await generateRecipeImage(recipeName)
         if (imageUrl) {
@@ -136,10 +136,10 @@ export default function RecipePage() {
     )
   }
 
-  const formattedInstructions = formatRecipeInstructions(recipe.instructions)
-  const recipeName = formattedInstructions['Recipe Name'] || 'Delicious Recipe'
-  const ingredients = recipe.ingredients.split(',').map(item => item.trim())
-  const instructions = splitInstructions(formattedInstructions['Instructions'])
+  const formattedInstructions = formatRecipeInstructions(recipe.instructions ?? '');
+  const recipeName = formattedInstructions['Recipe Name'] || 'Delicious Recipe';
+  const ingredients = recipe.ingredients.split(',').map(item => item.trim());
+  const instructions = splitInstructions(formattedInstructions['Instructions'] ?? '');
 
   return (
     <div className="min-h-screen bg-cover bg-center bg-fixed relative py-8 px-4" style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none' }}>
