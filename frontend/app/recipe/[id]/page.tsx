@@ -20,7 +20,7 @@ async function fetchRecipe(id: string | string[]) {
   }
 }
 
-function formatRecipeInstructions(instructions: string) {
+function formatRecipeInstructions(instructions: string | never) {
   const sections = instructions.split('\n')
   const formattedData: { [key: string]: string } = {}
 
@@ -42,7 +42,7 @@ function capitalizeFirstLetter(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-async function generateRecipeImage(recipeName: string) {
+async function generateRecipeImage(recipeName: string | never) {
   try {
     const response = await fetch('https://stablediffusionapi.com/api/v3/text2img', {
       method: 'POST',
@@ -77,7 +77,7 @@ async function generateRecipeImage(recipeName: string) {
   }
 }
 
-function splitInstructions(instructions: string): string[] {
+function splitInstructions(instructions: string | never): string[] {
   return instructions
     .split(/[\n.]/)
     .map(step => step.trim())
