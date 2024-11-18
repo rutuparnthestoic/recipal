@@ -25,7 +25,7 @@ export default function AboutUs() {
           Our Mission
         </h2>
         <p>
-          Each team member has contributed uniquely to shaping Recipal into what it is today. Together, we have worked diligently to bring Recipal to life, and we're excited to share our work with you!
+          Each team member has contributed uniquely to shaping Recipal into what it is today. Together, we have worked diligently to bring Recipal to life, and we are excited to share our work with you!
         </p>
       </section>
 
