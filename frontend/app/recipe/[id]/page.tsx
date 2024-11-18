@@ -131,7 +131,7 @@ export default function RecipePage() {
   if (!recipe) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <p className="text-xl text-red-600">Oops! We couldn't find that recipe. Please try again.</p>
+        <p className="text-xl text-red-600">Oops! We couldn not find that recipe. Please try again.</p>
       </div>
     )
   }
