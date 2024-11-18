@@ -1,5 +1,17 @@
-import { GraduationCap, Users, Rocket, Code, Database, Brain, Image, Volume2 } from 'lucide-react'
+import { GraduationCap, Users, Rocket, Code, Database, Brain, Volume2 } from 'lucide-react'
 import Link from 'next/link'
+
+interface Responsibility {
+  icon: JSX.Element;
+  text: string;
+}
+
+interface TeamMemberProps {
+  name: string;
+  role: string;
+  responsibilities: Responsibility[];
+  link: string;
+}
 
 export default function AboutUs() {
   return (
@@ -25,7 +37,7 @@ export default function AboutUs() {
           Our Mission
         </h2>
         <p>
-          Each team member has contributed uniquely to shaping Recipal into what it is today. Together, we have worked diligently to bring Recipal to life, and we're excited to share our work with you!
+          Each team member has contributed uniquely to shaping Recipal into what it is today. Together, we have worked diligently to bring Recipal to life, and we are excited to share our work with you!
         </p>
       </section>
 
@@ -50,7 +62,7 @@ export default function AboutUs() {
             role="Team Member"
             link="https://www.linkedin.com/in/saamya-gupta-2bb11b241/"
             responsibilities={[
-              { icon: <Image className="w-4 h-4" />, text: "Fine tuning YOLOV9 image to ingredients model" },
+              { icon: <Brain className="w-4 h-4" />, text: "Fine tuning YOLOV9 image to ingredients model" },
               { icon: <Database className="w-4 h-4" />, text: "Dataset preparation" },
               { icon: <Database className="w-4 h-4" />, text: "Dataset cleaning" }
             ]}
@@ -62,7 +74,7 @@ export default function AboutUs() {
             responsibilities={[
               { icon: <Brain className="w-4 h-4" />, text: "Fine tuning prediction model" },
               { icon: <Database className="w-4 h-4" />, text: "Dataset Cleaning" },
-              { icon: <Image className="w-4 h-4" />, text: "Integrated Stable Diffusion" }
+              { icon: <Brain className="w-4 h-4" />, text: "Integrated Stable Diffusion" }
             ]}
           />
           <TeamMember
@@ -72,7 +84,7 @@ export default function AboutUs() {
             responsibilities={[
               { icon: <Code className="w-4 h-4" />, text: "Integrating front-end and back-end" },
               { icon: <Volume2 className="w-4 h-4" />, text: "Integrating text-to-speech API" },
-              { icon: <Image className="w-4 h-4" />, text: "Contributing in fine tuning YOLOV9 image to ingredients model" }
+              { icon: <Brain className="w-4 h-4" />, text: "Contributing in fine tuning YOLOV9 image to ingredients model" }
             ]}
           />
         </div>
@@ -81,7 +93,7 @@ export default function AboutUs() {
   )
 }
 
-function TeamMember({ name, role, responsibilities, link }) {
+function TeamMember({ name, role, responsibilities, link }: TeamMemberProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <Link href={link} className="text-xl font-semibold text-blue-600 hover:underline">
