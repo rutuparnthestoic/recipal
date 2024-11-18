@@ -1,4 +1,4 @@
-#main python file.
+#main python file
 
 from flask import Flask, request, jsonify
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -97,3 +97,4 @@ def get_recipe(recipe_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+# Recipal
