@@ -21,29 +21,25 @@ async function fetchRecipe(id: string | string[]) {
 }
 
 function formatRecipeInstructions(instructions: string | undefined) {
-  if (!instructions) {
-    return {}; // Return an empty object if instructions are undefined or empty
-  }
+  const sections = instructions.split('\n')
+  const formattedData: { [key: string]: string } = {}
 
-  const sections = instructions.split('\n');
-  const formattedData: { [key: string]: string } = {};
-
-  let currentSection = '';
+  let currentSection = ''
   for (const line of sections) {
     if (line.includes(':')) {
-      const [key, value] = line.split(':');
-      currentSection = key.trim();
-      formattedData[currentSection] = value.trim();
+      const [key, value] = line.split(':')
+      currentSection = key.trim()
+      formattedData[currentSection] = value.trim()
     } else if (currentSection === 'Instructions') {
-      formattedData[currentSection] = (formattedData[currentSection] || '') + '\n' + line.trim();
+      formattedData[currentSection] = (formattedData[currentSection] || '') + '\n' + line.trim()
     }
   }
 
-  return formattedData;
+  return formattedData
 }
 
 function capitalizeFirstLetter(text: string) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
+  return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
 async function generateRecipeImage(recipeName: string | undefined) {
@@ -76,54 +72,50 @@ async function generateRecipeImage(recipeName: string | undefined) {
       return null;
     }
   } catch (error) {
-    console.error("Error generating image with Stable Diffusion:", error);
-    return null;
+    console.error("Error generating image with Stable Diffusion:", error)
+    return null
   }
 }
 
 function splitInstructions(instructions: string | undefined): string[] {
-  if (!instructions) {
-    return []; // Return an empty array if instructions are undefined
-  }
-
   return instructions
     .split(/[\n.]/)
     .map(step => step.trim())
-    .filter(step => step.length > 0);
+    .filter(step => step.length > 0)
 }
 
 export default function RecipePage() {
-  const { id } = useParams();
-  const [recipe, setRecipe] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [backgroundImage, setBackgroundImage] = useState(null);
-  const [imageError, setImageError] = useState(false);
-  const { toPDF, targetRef } = usePDF({filename: 'recipe.pdf'});
+  const { id } = useParams()
+  const [recipe, setRecipe] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [backgroundImage, setBackgroundImage] = useState(null)
+  const [imageError, setImageError] = useState(false)
+  const { toPDF, targetRef } = usePDF({filename: 'recipe.pdf'})
 
   useEffect(() => {
     const getRecipe = async () => {
       try {
-        const recipeData = await fetchRecipe(id);
-        setRecipe(recipeData);
+        const recipeData = await fetchRecipe(id)
+        setRecipe(recipeData)
 
-        const formattedInstructions = formatRecipeInstructions(recipeData.instructions);
-        const recipeName = formattedInstructions['Recipe Name'] || 'Delicious recipe';
-        const imageUrl = await generateRecipeImage(recipeName);
+        const formattedInstructions = formatRecipeInstructions(recipeData.instructions)
+        const recipeName = formattedInstructions['Recipe Name'] || 'Delicious recipe'
+        const imageUrl = await generateRecipeImage(recipeName)
         if (imageUrl) {
-          setBackgroundImage(imageUrl);
-          setImageError(false);
+          setBackgroundImage(imageUrl)
+          setImageError(false)
         } else {
-          setImageError(true);
+          setImageError(true)
         }
       } catch (error) {
-        console.error("Error fetching recipe:", error);
-        setImageError(true);
+        console.error("Error fetching recipe:", error)
+        setImageError(true)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-    getRecipe();
-  }, [id]);
+    }
+    getRecipe()
+  }, [id])
 
   if (loading) {
     return (
@@ -133,21 +125,21 @@ export default function RecipePage() {
         <Skeleton className="h-4 w-1/3 mx-auto" />
         <p className="mt-4 text-gray-600">Preparing your culinary masterpiece...</p>
       </div>
-    );
+    )
   }
 
   if (!recipe) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <p className="text-xl text-red-600">Oops! We couldn’t find that recipe. Please try again.</p>
+        <p className="text-xl text-red-600">Oops! We couldn't find that recipe. Please try again.</p>
       </div>
-    );
+    )
   }
 
-  const formattedInstructions = formatRecipeInstructions(recipe.instructions);
-  const recipeName = formattedInstructions['Recipe Name'] || 'Delicious Recipe';
-  const ingredients = recipe.ingredients.split(',').map(item => item.trim());
-  const instructions = splitInstructions(formattedInstructions['Instructions']);
+  const formattedInstructions = formatRecipeInstructions(recipe.instructions)
+  const recipeName = formattedInstructions['Recipe Name'] || 'Delicious Recipe'
+  const ingredients = recipe.ingredients.split(',').map(item => item.trim())
+  const instructions = splitInstructions(formattedInstructions['Instructions'])
 
   return (
     <div className="min-h-screen bg-cover bg-center bg-fixed relative py-8 px-4" style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none' }}>
@@ -205,21 +197,6 @@ export default function RecipePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {['Protein', 'Carbs', 'Fat', 'Cholesterol', 'Calories', 'Texture', 'Taste'].map((item) => (
                 <div key={item} className="bg-gray-100 p-3 rounded-lg">
-                  <h3 className="text-sm font-semibold mb-1 flex items-center">
-                    <BarChart className="w-4 h-4 mr-1" />
-                    {item}
-                  </h3>
-                  <p className="text-gray-700">{recipe[item.toLowerCase()] || formattedInstructions[item] || 'N/A'}</p>
-                </div>
-              ))}
-            </div>
-
-            <Separator />
-
-            <div>
-              <h2 className="text-xl font-semibold mb-3 flex items-center">
-                <Utensils className="mr-2" />
-                Instructions
                   <h3 className="text-sm font-semibold mb-1 flex items-center">
                     <BarChart className="w-4 h-4 mr-1" />
                     {item}
