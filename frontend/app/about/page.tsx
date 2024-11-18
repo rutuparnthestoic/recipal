@@ -1,4 +1,4 @@
-import { GraduationCap, Users, Rocket, Code, Database, Brain, Image, Volume2 } from 'lucide-react'
+import { GraduationCap, Users, Rocket, Code, Database, Brain, Volume2 } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AboutUs() {
@@ -50,7 +50,7 @@ export default function AboutUs() {
             role="Team Member"
             link="https://www.linkedin.com/in/saamya-gupta-2bb11b241/"
             responsibilities={[
-              { icon: <Image className="w-4 h-4" alt="icon1"/>, text: "Fine tuning YOLOV9 image to ingredients model" },
+              { icon: <Brain className="w-4 h-4" />, text: "Fine tuning YOLOV9 image to ingredients model" },
               { icon: <Database className="w-4 h-4" />, text: "Dataset preparation" },
               { icon: <Database className="w-4 h-4" />, text: "Dataset cleaning" }
             ]}
@@ -62,7 +62,7 @@ export default function AboutUs() {
             responsibilities={[
               { icon: <Brain className="w-4 h-4" />, text: "Fine tuning prediction model" },
               { icon: <Database className="w-4 h-4" />, text: "Dataset Cleaning" },
-              { icon: <Image className="w-4 h-4" alt="icon2"/>, text: "Integrated Stable Diffusion" }
+              { icon: <Brain className="w-4 h-4" />, text: "Integrated Stable Diffusion" }
             ]}
           />
           <TeamMember
@@ -72,7 +72,7 @@ export default function AboutUs() {
             responsibilities={[
               { icon: <Code className="w-4 h-4" />, text: "Integrating front-end and back-end" },
               { icon: <Volume2 className="w-4 h-4" />, text: "Integrating text-to-speech API" },
-              { icon: <Image className="w-4 h-4" alt="icon3"/>, text: "Contributing in fine tuning YOLOV9 image to ingredients model" }
+              { icon: <Brain className="w-4 h-4" />, text: "Contributing in fine tuning YOLOV9 image to ingredients model" }
             ]}
           />
         </div>
