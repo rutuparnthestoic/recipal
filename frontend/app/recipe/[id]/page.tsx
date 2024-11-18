@@ -78,10 +78,11 @@ async function generateRecipeImage(recipeName: string | undefined) {
 }
 
 function splitInstructions(instructions: string | undefined): string[] {
-  return instructions
+  return instructions ? instructions
     .split(/[\n.]/)
     .map(step => step.trim())
-    .filter(step => step.length > 0)
+    .filter(step => step.length > 0) 
+    : ''
 }
 
 export default function RecipePage() {
