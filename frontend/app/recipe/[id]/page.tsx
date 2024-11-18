@@ -82,7 +82,7 @@ function splitInstructions(instructions: string | undefined): string[] {
     .split(/[\n.]/)
     .map(step => step.trim())
     .filter(step => step.length > 0) 
-    : ''
+    : ['']
 }
 
 export default function RecipePage() {
