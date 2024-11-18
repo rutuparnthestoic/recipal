@@ -30,6 +30,7 @@ export default function GeneratePage() {
     }
   }
 
+  //Handle Submit function
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
