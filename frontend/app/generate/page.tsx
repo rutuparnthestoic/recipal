@@ -77,7 +77,7 @@ export default function GeneratePage() {
       </div>
 
       <div className="max-w-3xl mx-auto relative z-10">
-        <h1 className="text-4xl font-bold text-center text-gray-900 mb-4">Let's Cook Up Some Delicious Meal!</h1>
+        <h1 className="text-4xl font-bold text-center text-gray-900 mb-4">Let&apos;s Cook Up Some Delicious Meal!</h1>
         <p className="text-center text-gray-700 mb-8">Tell us what you have got and your preferences, and we will whip up an amazing recipe for you.</p>
         
         <Card className="bg-white bg-opacity-90 shadow-xl rounded-lg overflow-hidden backdrop-blur-sm">
