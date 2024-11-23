@@ -1,27 +1,26 @@
-#main python file
-
 from flask import Flask, request, jsonify
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import uuid
 from flask_cors import CORS
+from ultralytics import YOLO
+import cv2
+import numpy as np
 
-# Initialize the Flask app
 app = Flask(__name__)
 CORS(app)
 
-# Load the model and tokenizer
 model_folder = "./recipal"
 tokenizer = AutoTokenizer.from_pretrained(model_folder)
 model = AutoModelForCausalLM.from_pretrained(model_folder, torch_dtype=torch.float16)
-model = model.to("cuda" if torch.cuda.is_available() else "cpu")  # Use GPU if available
+model = model.to("cuda" if torch.cuda.is_available() else "cpu")
 
-# In-memory storage for recipes (use a database in production)
+yolo_model_path = './yolo/best.pt'
+yolo_model = YOLO(yolo_model_path)
+
 recipes_storage = {}
 
-# Helper function to create prompt
 def create_prompt(ingredients, protein, fat, carbs, texture, taste, cholesterol, calories):
-    # Format the input prompt with the additional information
     ingredients = ', '.join([x.strip().lower() for x in ingredients.split(',')])
     s = (f"<|startoftext|>Ingredients:\n{ingredients}\n"
          f"Protein Level: {protein}\n"
@@ -30,14 +29,34 @@ def create_prompt(ingredients, protein, fat, carbs, texture, taste, cholesterol,
          f"Texture: {texture}\n"
          f"Taste: {taste}\n"
          f"Cholesterol: {cholesterol}\n"
-         f"Calories: {calories}\n" 
-         )
+         f"Calories: {calories}\n")
     return s
 
-# Define a route for generating and storing a recipe
+@app.route('/api/detect-ingredients', methods=['POST'])
+def detect_ingredients():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
+    
+    image_file = request.files['image']
+    image_bytes = image_file.read()
+
+    image_np = np.frombuffer(image_bytes, np.uint8)
+    image = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
+
+    results = yolo_model(image)
+
+    detected_ingredients = set()
+    for result in results:
+        for box in result.boxes:
+            ingredient_class_id = int(box.cls)
+            ingredient_name = yolo_model.names[ingredient_class_id]
+            detected_ingredients.add(ingredient_name)
+
+    return jsonify({"detected_ingredients": list(detected_ingredients)}), 200
+
 @app.route('/api/generate', methods=['POST'])
 def generate_recipe():
-    data = request.json  # Get data sent by the client
+    data = request.json
     ingredients = data.get("ingredients")
     protein = data.get("protein")
     fat = data.get("fat")
@@ -47,16 +66,13 @@ def generate_recipe():
     cholesterol = data.get("cholesterol")
     calories = data.get("calories")
 
-    # Check for missing parameters
     if not all([ingredients, protein, fat, carbs, texture, taste]):
         return jsonify({"error": "Missing one or more required fields"}), 400
 
-    # Create the prompt for the model
     prompt = create_prompt(ingredients, protein, fat, carbs, texture, taste, cholesterol, calories)
 
-    # Generate recipe instructions with attention mask
     inputs = tokenizer(prompt, return_tensors="pt", padding=True).to(model.device)
-    attention_mask = inputs['attention_mask']  # Set attention mask explicitly
+    attention_mask = inputs['attention_mask']
     output = model.generate(
         inputs['input_ids'],
         attention_mask=attention_mask,
@@ -66,11 +82,9 @@ def generate_recipe():
     )
     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 
-    # Extract the generated recipe details
-    recipe_text = generated_text.replace(prompt, "").strip()  # Clean up the output
-    recipe_id = str(uuid.uuid4())  # Generate a unique ID for the recipe
+    recipe_text = generated_text.replace(prompt, "").strip()
+    recipe_id = str(uuid.uuid4())
 
-    # Store the recipe in memory
     recipes_storage[recipe_id] = {
         "id": recipe_id,
         "ingredients": ingredients,
@@ -84,10 +98,8 @@ def generate_recipe():
         "instructions": recipe_text
     }
 
-    # Return the recipe ID to the frontend
     return jsonify({"id": recipe_id}), 201
 
-# Define a route to retrieve a recipe by ID
 @app.route('/api/recipe/<string:recipe_id>', methods=['GET'])
 def get_recipe(recipe_id):
     recipe = recipes_storage.get(recipe_id)
@@ -97,4 +109,3 @@ def get_recipe(recipe_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
-# Recipal
