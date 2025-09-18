@@ -20,4 +20,4 @@
 
 
 ## Contact us
-- For any issue, feel free to email me : rithvikthestoic@gmail.com
+- For any issue, feel free to email us : rithvikthestoic@gmail.com 
