@@ -12,6 +12,7 @@
 
 - Download the model weights from here : [Link to the folder](https://drive.google.com/drive/folders/1yHe6-X7dqlWPm4kjVgbnbOjxyGTwy1Y6?usp=sharing) 
 - You can also visit the training code here : [Kaggle Code](https://www.kaggle.com/code/rithvik5151/recipal-final-code)
+- You can also visit the training YOLO code here :[Kaggle Code](https://www.kaggle.com/code/saamyagupta/ingredients-cv-model)
 - Run the backend server by ```python3 app.py ```
 - Run the frontend Next JS app by ```npm run dev```
 - This project internally uses Stable Diffusion's Text to Image API. Get your own API key and replace in the following file : ```frontend/app/recipe/[id]/page.tsx``` for the application to run properly.
